@@ -1,50 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-public class PlayerControllerTutorialUpdates : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-// Start is called before the first frame update
-void Start()
-{
+    [Header("Movement")]
+    [SerializeField] private float speed = 5.0f;
 
+    [Header("Input")]
+    [SerializeField] private InputActionReference moveActionReference;
 
-}
-
-
-// Update is called once per frame
-void Update()
-{
-    float horizontal = 0.0f;
-    if (Keyboard.current.leftArrowKey.isPressed)
+    private void Start()
     {
-        horizontal = -1.0f;
- 	    }
-    else if (Keyboard.current.rightArrowKey.isPressed)
-    {
-        horizontal = 1.0f;
+        if (moveActionReference != null)
+        {
+            moveActionReference.action.Enable();
+        }
     }
-    Debug.Log(horizontal);
 
-
-    float vertical = 0.0f;
-    if (Keyboard.current.upArrowKey.isPressed)
+    private void Update()
     {
-        vertical = 1.0f;
+        if (moveActionReference == null) return;
+
+        // Read the 2D input vector
+        Vector2 moveInput = moveActionReference.action.ReadValue<Vector2>();
+
+        // Calculate translation vector (x, y, 0) scaled by speed and deltaTime
+        Vector3 movement = new Vector3(moveInput.x, moveInput.y, 0f) * speed * Time.deltaTime;
+
+        // Move the player (retains existing Z position)
+        transform.position += movement;
     }
-    else if (Keyboard.current.downArrowKey.isPressed)
-    {
-        vertical = -1.0f;
-    }
-    Debug.Log(vertical);
-
-
-    Vector2 position = transform.position;
-    position.x = position.x + 0.1f * horizontal;
-    position.y = position.y + 0.1f * vertical;
-    transform.position = position;
-}
-
 }
