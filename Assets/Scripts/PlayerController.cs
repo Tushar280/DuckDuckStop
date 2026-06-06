@@ -4,52 +4,47 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class PlayerController : MonoBehaviour {
+public class PlayerControllerTutorialUpdates : MonoBehaviour
+{
+// Start is called before the first frame update
+void Start()
+{
 
-    public float speed;
-    private Rigidbody2D rb2d;
 
-    void Start()
+}
+
+
+// Update is called once per frame
+void Update()
+{
+    float horizontal = 0.0f;
+    if (Keyboard.current.leftArrowKey.isPressed)
     {
-        rb2d = GetComponent<Rigidbody2D> ();
-    }
-
-    void Update()
+        horizontal = -1.0f;
+ 	    }
+    else if (Keyboard.current.rightArrowKey.isPressed)
     {
-        float moveHorizontal = 0f;
-        float moveVertical = 0f;
-
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
-            {
-                moveVertical += 1f;
-            }
-            if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed)
-            {
-                moveVertical -= 1f;
-            }
-            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-            {
-                moveHorizontal += 1f;
-            }
-            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
-            {
-                moveHorizontal -= 1f;
-            }
-        }
-
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-        if (movement.magnitude > 1f)
-        {
-            movement.Normalize();
-        }
-
-        rb2d.linearVelocity = movement * speed;
-
-        
+        horizontal = 1.0f;
     }
-    void FixedUpdate()
+    Debug.Log(horizontal);
+
+
+    float vertical = 0.0f;
+    if (Keyboard.current.upArrowKey.isPressed)
     {
+        vertical = 1.0f;
     }
+    else if (Keyboard.current.downArrowKey.isPressed)
+    {
+        vertical = -1.0f;
+    }
+    Debug.Log(vertical);
+
+
+    Vector2 position = transform.position;
+    position.x = position.x + 0.1f * horizontal;
+    position.y = position.y + 0.1f * vertical;
+    transform.position = position;
+}
+
 }
